@@ -12,11 +12,11 @@ export default function StartButton() {
         onMouseLeave={() => setIsHovered(false)}
 
       style={{ backgroundImage: `url(${isHovered ? StartBtnBgHover : StartBtnBg})` }}
-      className="bg-cover bg-center bg-no-repeat flex items-center justify-center h-[197px] w-[313px] hover:cursor-pointer"
+      className="bg-cover bg-center bg-no-repeat flex items-center justify-center w-[250px] aspect-[313/197] hover:cursor-pointer"
     >
       <p className="text-5xl font-jersey text-btn-text-blue">
         Start
-        <br />
+        <br/>
         Game
       </p>
     </div>
