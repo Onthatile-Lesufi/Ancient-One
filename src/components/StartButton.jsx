@@ -2,9 +2,11 @@ import { useState } from 'react';
 import StartBtnBg from "../assets/StartBtnBg.png";
 import StartBtnBgHover from "../assets/StartBtnBgHover.png"
 import "../index.css";
+import { useNavigate } from 'react-router-dom';
 
 export default function StartButton() {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -13,6 +15,7 @@ export default function StartButton() {
 
       style={{ backgroundImage: `url(${isHovered ? StartBtnBgHover : StartBtnBg})` }}
       className="bg-cover bg-center bg-no-repeat flex items-center justify-center h-[197px] w-[313px] hover:cursor-pointer"
+      onClick={() => navigate('/game')}
     >
       <p className="text-5xl font-jersey text-btn-text-blue">
         Start
