@@ -4,10 +4,12 @@
   --font-jersey: "Jersey 25", sans-serif;
   --color-btn-text-blue: #0CE9F9;
   --color-ancient-one-pink: #F605C6;
+  --color-ancient-one-blue: #16348A;
 }
 
 .jersey-25-regular {
   font-family: "Jersey 25", sans-serif;
   font-weight: 400;
   font-style: normal;
+  letter-spacing:  0.05em;
 }

@@ -1,15 +1,13 @@
-import StartButton from "../components/StartButton";
-import Logo from "../components/Logo";
+import DashSection1 from "../components/DashSection1";
 import TopBar from "../components/TopBar";
+import DashSection2 from "../components/DashSection2";
 
 export default function Dashboard() {
   return (
-    <div className="flex items-center justify-center flex-col gap-y-[50px]">
+    <div>
       <TopBar />
-      <div className='flex items-center justify-center flex-col gap-y-[90px]'>
-        <Logo />
-        <StartButton />
-      </div>
+      <DashSection1 />
+      <DashSection2/>
     </div>
   );
 }

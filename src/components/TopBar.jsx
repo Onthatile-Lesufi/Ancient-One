@@ -1,7 +1,7 @@
 export default function TopBar(){
     return(
         <div 
-            className="h-[60px] w-screen bg-ancient-one-pink ">
+            className="sticky top-0 h-[60px] w-full bg-ancient-one-pink ">
         </div>
     )
 }
