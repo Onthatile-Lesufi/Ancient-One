@@ -1,9 +1,13 @@
-import StartButton from "../components/StartButton";
+import DashSection1 from "../components/DashSection1";
+import TopBar from "../components/TopBar";
+import DashSection2 from "../components/DashSection2";
 
-export default function Dashboard(){
-    return(
-        <div className="flex items-center justify-center">
-            <StartButton/>
-        </div>
-    );
+export default function Dashboard() {
+  return (
+    <div>
+      <TopBar />
+      <DashSection1 />
+      <DashSection2/>
+    </div>
+  );
 }
