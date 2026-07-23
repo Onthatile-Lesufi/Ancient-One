@@ -5,6 +5,7 @@ import StartModal from "../components/StartModal";
 import TitleBg from "../assets/game_assets/Points_BG.png";
 import ExitButton from "../assets/game_assets/Exit_Button.png";
 import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function Game() {
     const Rift = { Name: "rift-square" };
@@ -15,19 +16,18 @@ function Game() {
     const [modalShow, setModalShow] = useState(true);
     const size = 9;
 
-    // Grid cells now track both base Name and an optional overlay marker
-    const [grid, setGrid] = useState(() => 
+    const [grid, setGrid] = useState(() =>
         Array.from({ length: size }, () =>
             Array.from({ length: size }, () => ({ Name: "synth-square", overlay: null }))
         )
     );
-    const [players, setPlayers] = useState([]); 
+    const [players, setPlayers] = useState([]);
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
     const updateCell = (rowIndex, colIndex, newBlock, overlay = undefined) => {
-        setGrid(prevGrid => 
-            prevGrid.map((row, rIdx) => 
-                rIdx === rowIndex 
+        setGrid(prevGrid =>
+            prevGrid.map((row, rIdx) =>
+                rIdx === rowIndex
                     ? row.map((cell, cIdx) => {
                         if (cIdx === colIndex) {
                             return {
@@ -43,7 +43,7 @@ function Game() {
         );
     };
 
-    function BoardSetup() {
+    const BoardSetup = () => {
         for (let _i = 0; _i < grid.length; _i++) {
             const _pos = 9 - (_i + 1);
             updateCell(_i, _pos, Rift);
@@ -56,7 +56,7 @@ function Game() {
         // Place Portal markers at (0,0) and (8,8)
         updateCell(0, 0, null, "portal-marker");
         updateCell(8, 8, null, "portal-marker");
-    }
+    };
 
     const spawnPoints = [
         { row: 0, col: 0 },
@@ -67,7 +67,7 @@ function Game() {
         { row: 8, col: 4 },
     ];
 
-    function AddPlayers(count) {
+    const AddPlayers = (count) => {
         const playerColors = ["#E63946", "#1D3557", "#2A9D8F", "#F4A261", "#9C27B0", "#00BCD4"];
 
         const newPlayers = Array.from({ length: count }, (_, i) => ({
@@ -82,10 +82,9 @@ function Game() {
 
         setPlayers(newPlayers);
         setCurrentPlayerIndex(0);
-    }
+    };
 
     const movePlayer = (playerId, newRow, newCol) => {
-        // Portal teleport logic
         if (newRow === 0 && newCol === 0) {
             newRow = 8;
             newCol = 8;
@@ -97,6 +96,15 @@ function Game() {
         setPlayers(prevPlayers =>
             prevPlayers.map(p =>
                 p.id === playerId ? { ...p, row: newRow, col: newCol } : p
+            )
+        );
+    };
+
+    // FIXED: Safe state calculation and non-negative energy check
+    const UpdatePlayerEnergy = (id, amount) => {
+        setPlayers(prevPlayers =>
+            prevPlayers.map(p =>
+                p.id === id ? { ...p, energy: Math.max(0, p.energy + amount) } : p
             )
         );
     };
@@ -114,70 +122,108 @@ function Game() {
     }, []);
 
     return (
-        <div className="game-container">
-            <div className="grid-container">
-                <h2>
-                    {players.length > 0 
-                        ? `Current Turn: ${players[currentPlayerIndex]?.name}` 
-                        : "Round"}
-                </h2>
-                
-                <table className="game-grid">
-                    <tbody>
-                        {grid.map((row, rIdx) => (
-                            <tr key={rIdx}>
-                                {row.map((cell, cIdx) => (
-                                    <td 
-                                        key={cIdx} 
-                                        onClick={() => handleCellClick(rIdx, cIdx)}
-                                        className={`interactive-cell ${cell.Name}`}
-                                    >
-                                        {/* OVERLAY LAYER: Portals, Traps, Power-ups */}
-                                        {cell.overlay && (
-                                            <div className={`tile-overlay ${cell.overlay}`} />
-                                        )}
+        <div className="screen-container">
+            <div className="game-container">
+                <div className="grid-container">
+                    <h2>
+                        {players.length > 0
+                            ? `Current Turn: ${players[currentPlayerIndex]?.name} `
+                            : "Round "}
+                        <Button onClick={() => navigate('/score')}>End Game</Button>
+                    </h2>
 
-                                        {/* PLAYER LAYER */}
-                                        <div className="player-layer">
-                                            {players
-                                                .filter(p => p.row === rIdx && p.col === cIdx)
-                                                .map(player => {
-                                                    const isActive = players[currentPlayerIndex]?.id === player.id;
-                                                    return (
-                                                        <div 
-                                                            key={player.id} 
-                                                            className={`player-token ${isActive ? "active-token" : ""}`} 
-                                                            style={{ backgroundColor: player.color }}
-                                                        >
-                                                            {player.id + 1}
-                                                        </div>
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                    <table className="game-grid">
+                        <tbody>
+                            {grid.map((row, rIdx) => (
+                                <tr key={rIdx}>
+                                    {row.map((cell, cIdx) => (
+                                        <td
+                                            key={cIdx}
+                                            onClick={() => handleCellClick(rIdx, cIdx)}
+                                            className={`interactive-cell ${cell.Name}`}
+                                        >
+                                            {/* OVERLAY LAYER */}
+                                            {cell.overlay && (
+                                                <div className={`tile-overlay ${cell.overlay}`} />
+                                            )}
+
+                                            {/* PLAYER LAYER */}
+                                            <div className="player-layer">
+                                                {players
+                                                    .filter(p => p.row === rIdx && p.col === cIdx)
+                                                    .map(player => {
+                                                        const isActive = players[currentPlayerIndex]?.id === player.id;
+                                                        return (
+                                                            <div
+                                                                key={player.id}
+                                                                className={`player-token ${isActive ? "active-token" : ""}`}
+                                                                style={{ backgroundColor: player.color }}
+                                                            >
+                                                                {player.id + 1}
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* FIXED: Player progress list with keys and item rendering */}
+                <div className="player-panel">
+                    <h2>Player Progress</h2>
+                    {players.map(player => (
+                        <div key={player.id} className="player-card">
+                            <div>
+                                <h3>
+                                    <span style={{ color: player.color }}>● </span>
+                                    {player.name} | {player.energy} Energy{" "}
+                                    <Button size="sm" variant="success" onClick={() => UpdatePlayerEnergy(player.id, 1)}>
+                                        <strong>+</strong>
+                                    </Button>{" "}
+                                    <Button size="sm" variant="danger" onClick={() => UpdatePlayerEnergy(player.id, -1)}>
+                                        <strong>-</strong>
+                                    </Button>
+                                </h3>
+                            </div>
+                            <div>
+                                <p style={{ margin: 0 }}>
+                                    <strong>Items: <br/></strong>
+                                    {player.items.length > 0 ? (
+                                        player.items.map((item, idx) => (
+                                            <span key={idx} className="badge bg-secondary me-1">
+                                                {item}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span>None</span>
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-            
+
             <div>
                 <div style={{ position: "relative" }}>
                     <img style={{ position: "absolute" }} src={TitleBg} alt="Points BG" />
                     <h2>Points and Keys</h2>
                 </div>
                 <div style={{ position: "relative" }}>
-                    <p>Time Travellers Brew 1 Use (2 Energy)<br/>You can cross the centre line</p>
-                    <p>Ancient Pickaxe 1 Use (4 Energy)<br/>You Can Search in a 3x3 Area</p>
-                    <p>Ancient One’s Blessing 1 Use (6 Energy)<br/>Take Another Turn</p>
-                    <p>Ancient One’s Ire 1 Use (5 Energy)<br/>Another Player Skips Their Turn</p>
-                    <p>Thief’s Tools (Placeholder) 1 Use (10 Energy)<br/>Steal another player's Item or Egg</p>
+                    <p>Time Travellers Brew 1 Use (2 Energy)<br />You can cross the centre line</p>
+                    <p>Ancient Pickaxe 1 Use (4 Energy)<br />You Can Search in a 3x3 Area</p>
+                    <p>Ancient One’s Blessing 1 Use (6 Energy)<br />Take Another Turn</p>
+                    <p>Ancient One’s Ire 1 Use (5 Energy)<br />Another Player Skips Their Turn</p>
+                    <p>Thief’s Tools (Placeholder) 1 Use (10 Energy)<br />Steal another player's Item or Egg</p>
                 </div>
                 <img onClick={() => navigate('/')} src={ExitButton} alt="Exit" style={{ cursor: "pointer" }} />
             </div>
-            
+
             <StartModal show={modalShow} onHide={() => setModalShow(false)} passThrough={AddPlayers} />
         </div>
     );
