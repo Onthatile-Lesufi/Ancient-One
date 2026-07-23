@@ -1,9 +1,13 @@
-.game-container{
+.game-container {
     min-height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-columns: 1.5fr 0.5fr;
-    gap: 2px
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 2px;
+    background-image: url("../../assets/game_assets/Background.png"), linear-gradient(to bottom, #100122, #2D0E58);
+    background-size: cover;
+    background-position: center;
+    color: white;
 }
 
 .game-grid {
@@ -11,16 +15,125 @@
 }
 
 td {
-    width: 45px;
-    height: 45px;
+    width: 80px;
+    height: 60px;
     border-width: 0.125rem;
-    border-color: black;
+    border-color: rgb(0, 242, 255);
     text-align: center;
+    position: relative; /* REQUIRED: Keeps tokens anchored inside this cell */
+    padding: 0;          /* Prevents content offset */
+}
+
+td.interactive-cell {
+    cursor: pointer;
+}
+
+td.interactive-cell:hover {
+    filter: brightness(1.2) drop-shadow(0 0 4px #00f2ff);
 }
 
 .grid-container {
     width: 100%;
-    min-height: 50vh;
-    display: flex;
+    min-height: 100vh;
+    display: grid;
+    text-align: center;
     justify-content: center;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+/* --- PLAYER PIECES --- */
+
+.player-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    pointer-events: none;
+}
+
+.player-token {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.player-token.active-token {
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 8px 2px #00f2ff;
+    transform: scale(1.15);
+    z-index: 5;
+}
+
+/* --- TILE BACKGROUND CLASSES --- */
+
+.rift-square,
+.synth-square,
+.old-square {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.rift-square {
+    background-image: url("../../assets/game_assets/Rift_Square.png");
+}
+
+.synth-square {
+    background-image: url("../../assets/game_assets/Synth_Square.png");
+}
+
+.old-square {
+    background-image: url("../../assets/game_assets/Old_Square.png");
+}
+
+/* --- OVERLAY LAYER (Portals, Power-ups, Traps, Items) --- */
+.tile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Clicks go through to the td */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1; /* Above background, below players */
+}
+
+/* PORTAL OVERLAY MARKER */
+.portal-marker {
+    /* If using an image: */
+    /* background-image: url("../../assets/game_assets/Portal_Icon.png"); */
+    
+    /* Pure CSS portal effect if you don't have an asset image yet: */
+    background: radial-gradient(circle, rgba(0,242,255,0.8) 0%, rgba(138,43,226,0.5) 60%, transparent 80%);
+    animation: portal-pulse 1.8s infinite alternate ease-in-out;
+}
+
+/* Optional animation to make portals feel active */
+@keyframes portal-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 1;
+        filter: drop-shadow(0 0 6px #00f2ff);
+    }
 }
