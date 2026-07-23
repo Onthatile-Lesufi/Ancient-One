@@ -148,3 +148,35 @@ td.interactive-cell:hover {
     padding: 2rem;
     padding-top: 3rem;
 }
+
+.axe-power-up { 
+    background-image: url("../../assets/game_assets/power_ups/Axe.png"); 
+}
+
+.bones-pick-up { 
+    background-image: url("../../assets/game_assets/power_ups/Bones.png"); 
+}
+
+.brew-power-up { 
+    background-image: url("../../assets/game_assets/power_ups/Brew.png"); 
+}
+
+.egg-pick-up { 
+    background-image: url("../../assets/game_assets/power_ups/Egg.png"); 
+}
+
+.ire-power-up { 
+    background-image: url("../../assets/game_assets/power_ups/Ire.png"); 
+}
+
+.rock-marker { 
+    background-image: url("../../assets/game_assets/power_ups/Rock.png"); 
+}
+
+.tools-power-up { 
+    background-image: url("../../assets/game_assets/power_ups/Stool.png"); 
+}
+
+.blessing-power-up { 
+    background-image: url("../../assets/game_assets/power_ups/Wellspring.png"); 
+}
