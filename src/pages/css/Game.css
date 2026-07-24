@@ -1,3 +1,7 @@
+button {
+    border: none;
+}
+
 .screen-container {
     min-height: 100vh;
     width: 100%;
@@ -7,26 +11,40 @@
     color: white;
 }
 
+/* --- CONTAINER: Keep side-by-side split on all desktop/laptop resolutions --- */
 .game-container {
     min-height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-columns: 1.25fr 0.75fr;
-    gap: 2px;
+    grid-template-columns: 1.2fr 0.8fr; /* Proportional desktop split */
+    gap: 1rem;
 }
 
-.game-grid {
-    border-color: black;
-}
-
+/* --- CELL SIZING: Scales dynamically with screen height & width --- */
 td {
-    width: 80px;
-    height: 60px;
+    /* 
+       Min: 2.8rem (small laptop screens)
+       Preferred: 5.5vh (scales relative to monitor height)
+       Max: 4.5rem (large 4K monitors)
+    */
+    width: clamp(2.8rem, 7.5vh, 4.5rem);
+    height: clamp(2.8rem, 7.5vh, 4.5rem);
     border-width: 0.125rem;
     border-color: rgb(0, 242, 255);
     text-align: center;
-    position: relative; /* REQUIRED: Keeps tokens anchored inside this cell */
-    padding: 0;          /* Prevents content offset */
+    position: relative;
+    padding: 0;
+}
+
+/* --- REDUCE COMPACT PADDING FOR LAPTOPS --- */
+.grid-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 td.interactive-cell {
@@ -37,15 +55,6 @@ td.interactive-cell:hover {
     filter: brightness(1.2) drop-shadow(0 0 4px #00f2ff);
 }
 
-.grid-container {
-    width: 100%;
-    min-height: 100vh;
-    display: grid;
-    text-align: center;
-    justify-content: center;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-}
 
 /* --- PLAYER PIECES --- */
 
@@ -179,4 +188,7 @@ td.interactive-cell:hover {
 
 .blessing-power-up { 
     background-image: url("../../assets/game_assets/power_ups/Wellspring.png"); 
+}
+.x-marker { 
+    background-image: url("../../assets/game_assets/x-marker.png"); 
 }

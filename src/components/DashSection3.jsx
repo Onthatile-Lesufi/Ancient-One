@@ -6,7 +6,7 @@ import ArrowDown from "../assets/ArrowDown.png";
 
 export default function DashSection3() {
   return (
-    <div className="flex items-center justify-top flex-col gap-y-[90px] bg-gradient bg-gradient-to-t to-50% from-ancient-one-pink to-ancient-one-blue min-h-dvh">
+    <div className="w-full h-fit flex items-center justify-top flex-col gap-y-[90px] bg-linear-to-t to-50% from-ancient-one-pink to-ancient-one-blue min-h-dvh">
       <div className="h-[165px] aspect-[328/144] bg-cover bg-center bg-no-repeat">
         <img src={PointSystemHeading} alt="heading"/>
       </div>
